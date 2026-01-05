@@ -1,0 +1,24 @@
+version: "3.8"
+
+services:
+  mysql1:
+    image: mysql:5.7
+    container_name: mysql-node1
+    restart: always
+    ports:
+      - "3307:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: taskdb
+    command: >
+      --server-id=1
+      --log-bin=mysql-bin
+      --binlog-do-db=taskdb
+      --auto-increment-increment=2
+      --auto-increment-offset=1
+    volumes:
+      - mysql1_data:/var/lib/mysql
+      - ./schema.sql:/docker-entrypoint-initdb.d/01-schema.sql
+
+volumes:
+  mysql1_data:
